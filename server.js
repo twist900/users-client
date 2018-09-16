@@ -2,8 +2,9 @@ const express = require('express');
 const next = require('next');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+var proxy = require('http-proxy-middleware');
 
-const APP_SECRET = process.env.APP_SECRET || '123456789';
+const APP_SECRET = process.env.APP_SECRET || '987654321';
 const HOST = process.env.HOST || '127.0.0.1';
 const PORT = process.env.PORT || '3000';
 
@@ -41,6 +42,23 @@ app
   .prepare()
   .then(() => {
     const server = express();
+
+    server.use(
+      proxy('/signin', {
+        target: 'http://ec2-18-216-160-159.us-east-2.compute.amazonaws.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/signin': '/signin'
+        }
+      })
+    );
+
+    server.use(
+      proxy('/api', {
+        target: 'http://ec2-18-216-160-159.us-east-2.compute.amazonaws.com',
+        changeOrigin: true
+      })
+    );
 
     server.use(cookieParser());
 

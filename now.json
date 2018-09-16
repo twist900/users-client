@@ -1,0 +1,10 @@
+{
+  "type": "docker",
+  "features": {
+    "cloud": "v2"
+  },
+  "env": {
+    "API_HOST": "ec2-18-216-160-159.us-east-2.compute.amazonaws.com",
+    "APP_SECRET": "@app-secret"
+  }
+}
