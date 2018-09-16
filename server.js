@@ -4,8 +4,8 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
 const APP_SECRET = process.env.APP_SECRET || '123456789';
-const HOST = process.env.HOST || '127.0.0.1'
-const PORT = process.env.PORT || '3000'
+const HOST = process.env.HOST || '127.0.0.1';
+const PORT = process.env.PORT || '3000';
 
 const verifyJWT = token => {
   return new Promise(resolve => {
