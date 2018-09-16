@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'js-cookie';
 
@@ -20,4 +19,15 @@ export const deleteUser = async userId => {
   });
 
   return response.ok;
+};
+
+export const createUser = async userData => {
+  const { phoneNumber } = userData;
+  const response = await fetch(`http://localhost:4000/api/v1/users`, {
+    method: 'post',
+    headers: headers(),
+    body: JSON.stringify({ ...userData, phone_number: phoneNumber })
+  });
+
+  return response.json();
 };

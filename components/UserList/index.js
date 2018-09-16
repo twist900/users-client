@@ -1,18 +1,42 @@
 import React, { Component } from 'react';
-import { Card, Button, Grid, Segment, Dimmer, Loader, GridRow } from 'semantic-ui-react';
+import { Card, Button, Grid, Loader } from 'semantic-ui-react';
 import Head from 'next/head';
+import FormModal from '../FormModal';
+import UserForm from '../UserForm';
 import { fetchUsers, deleteUser } from '../../actions';
 import { withRouter } from 'next/router';
+import { resetNewUser, createUser } from '../../actions';
 
 class UserList extends Component {
+  state = {
+    modalOpen: false
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { users } = nextProps;
+    const { newUser } = users;
+
+    if (this.props.users.newUser.loading && !newUser.loading && !newUser.error) {
+      this.setState({ ...this.state, modalOpen: false });
+    }
+  };
+
   componentDidMount() {
     this.props.dispatch(fetchUsers());
   }
 
+  onAddUser = () => {
+    this.props.dispatch(resetNewUser());
+
+    this.setState({
+      ...this.state,
+      modalOpen: !this.state.modalOpen
+    });
+  };
+
   render() {
-    const { router, users, dispatch } = this.props;
-    const { loading, list } = users;
-    console.log(users.list);
+    const { users, dispatch } = this.props;
+    const { loading, list, newUser } = users;
 
     return (
       <div>
@@ -22,16 +46,34 @@ class UserList extends Component {
         <Grid columns="3">
           <Grid.Row>
             <Button
-              position="right"
               onClick={() => {}}
               color="green"
               size="mini"
               style={{ marginLeft: '1rem' }}
-              onClick={() => {}}
+              onClick={this.onAddUser}
             >
               Add User
             </Button>
+            <FormModal
+              open={this.state.modalOpen}
+              onClose={() =>
+                this.setState({
+                  ...this.state,
+                  modalOpen: !this.state.modalOpen
+                })
+              }
+              header="Create User"
+            >
+              <UserForm
+                submit={user => {
+                  this.props.dispatch(createUser(user));
+                }}
+                serverError={newUser.error}
+                loading={newUser.loading}
+              />
+            </FormModal>
           </Grid.Row>
+
           {list &&
             list.map(user => (
               <Grid.Column>
@@ -53,9 +95,6 @@ class UserList extends Component {
                       size="mini"
                     >
                       Delete
-                    </Button>
-                    <Button floated="right" size="mini">
-                      Edit
                     </Button>
                   </Card.Content>
                 </Card>
