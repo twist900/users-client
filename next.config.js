@@ -1,8 +1,20 @@
-module.exports = {
-  serverRuntimeConfig: {
-    // Will only be available on the server side
-  },
-  publicRuntimeConfig: {
-    // Will be available on both server and client
+const withCss = require('@zeit/next-css');
+
+module.exports = withCss({
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.(png|svg|eot|otf|ttf|woff|woff2)$/,
+      use: {
+        loader: 'url-loader',
+        options: {
+          limit: 100000,
+          publicPath: './',
+          outputPath: 'static/',
+          name: '[name].[ext]'
+        }
+      }
+    });
+
+    return config;
   }
-};
+});

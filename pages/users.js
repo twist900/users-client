@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import UserList from '../components/UserList';
 
 class Users extends React.Component {
@@ -11,4 +12,4 @@ class Users extends React.Component {
   }
 }
 
-export default Users;
+export default connect()(Users);
