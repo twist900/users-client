@@ -21,6 +21,7 @@ class LoginForm extends Component {
           .login-form,
           .login-form__grid {
             height: 100%;
+            margin-top: -150px;
           }
         `}</style>
         <div className="login-form">
