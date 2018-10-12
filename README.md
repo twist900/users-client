@@ -1,4 +1,4 @@
-# Frogogo-Client
+# Users-Client
 
 Server-side rendered (SSR) React application for a simple user administration system.
 
